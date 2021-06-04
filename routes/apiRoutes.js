@@ -1,15 +1,67 @@
-var db = require("../models");
+const router = require("express").Router();
+const Workout = require("../models/Workout");
+const Exercise = require("../models/Exercise");
 
-module.exports = function(app) {
-  app.get("/api/workouts", function(req, res) {
-    db.Workout.find({}).then(function(dbPosts) {
-      res.json(dbPosts);
+router.post("/api/exercises", ({ body }, res) => {
+  Exercise.create(body)
+    .then(dbExercises => {
+      res.json(dbExercises);
+    })
+    .catch(err => {
+      res.status(400).json(err);
     });
-  });
+});
 
-  app.put("/api/workouts/:id", function(req, res) {
-    db.Workout.updateOne({ _id: req.params.id }, { likes: req.body.likes }).then(function(dbPost) {
-      res.json(dbPost);
+router.post("/api/exercises/bulk", ({ body }, res) => {
+  Exercise.insertMany(body)
+    .then(dbExercises => {
+      res.json(dbExercises);
+    })
+    .catch(err => {
+      res.status(400).json(err);
     });
-  });
-};
+});
+
+router.get("/api/exercises", (req, res) => {
+  Exercise.find({})
+    .then(dbExercises => {
+      res.json(dbExercises);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
+router.post("/api/workouts", ({ body }, res) => {
+  Workout.create(body)
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
+router.post("/api/workouts/bulk", ({ body }, res) => {
+  Workout.insertMany(body)
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
+router.get("/api/workouts", (req, res) => {
+  Workout.find({})
+    .then(dbWorkout => {
+      res.json(dbWorkout);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+});
+
+module.exports = router;
+
+

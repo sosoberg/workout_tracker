@@ -8,8 +8,8 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-require("./routes/apiRoutes")(app);
-require("./routes/htmlRoutes")(app);
+require("./routes/apiRoutes");
+require("./routes/htmlRoutes");
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workoutTrackerDB", {
   useNewUrlParser: true
