@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 require("./routes/apiRoutes");
-require("./routes/htmlRoutes");
+require("./routes/htmlRoutes")(app);
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workoutTrackerDB", {
   useNewUrlParser: true

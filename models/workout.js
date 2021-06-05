@@ -6,11 +6,11 @@ var workoutSchema = new Schema({
   exercises: [
       {
         type: Schema.Types.ObjectId,
-        ref: "exercise"
+        ref: "Exercise"
       }
     ]
 });
 
-var Workout = mongoose.model("workout", workoutSchema);
+var Workout = mongoose.model("Workout", workoutSchema);
 
 module.exports = Workout;
