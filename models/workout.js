@@ -5,8 +5,13 @@ var workoutSchema = new Schema({
   day: { type: String, required: true },
   exercises: [
       {
-        type: Schema.Types.ObjectId,
-        ref: "Exercise"
+        type: String,
+        name: String,
+        weight: Number,
+        sets: Number,
+        reps: Number,
+        duration: Number,
+        distance: Number,
       }
     ]
 });

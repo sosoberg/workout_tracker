@@ -1,67 +1,54 @@
-const router = require("express").Router();
-const Workout = require("../models/Workout");
-const Exercise = require("../models/Exercise");
+const db = require("../models")
 
-router.post("/api/exercises", ({ body }, res) => {
-  Exercise.create(body)
-    .then(dbExercises => {
-      res.json(dbExercises);
+module.exports = function(app) {
+  app.post("/api/workouts", ({ body }, res) => {
+    db.Workout.create(body)
+      .then(dbWorkout => {
+        res.json(dbWorkout);
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+  });
+
+  app.post("/api/workouts/bulk", ({ body }, res) => {
+    db.Workout.insertMany(body)
+      .then(dbWorkout => {
+        res.json(dbWorkout);
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+  });
+
+  app.get("/api/workouts", (req, res) => {
+    db.Workout.find({})
+      .then(dbWorkout => {
+        res.json(dbWorkout);
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+
+  
+  });
+  app.get("/api/workouts/:id", (req, res) => {
+    db.Workout.findOne({
+      where: {
+        id: req.params.id
+      }
     })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
+      .then(dbWorkout => {
+        res.json(dbWorkout);
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
 
-router.post("/api/exercises/bulk", ({ body }, res) => {
-  Exercise.insertMany(body)
-    .then(dbExercises => {
-      res.json(dbExercises);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
+  
+  });
 
-router.get("/api/exercises", (req, res) => {
-  Exercise.find({})
-    .then(dbExercises => {
-      res.json(dbExercises);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
+};
 
-router.post("/api/workouts", ({ body }, res) => {
-  Workout.create(body)
-    .then(dbWorkout => {
-      res.json(dbWorkout);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
-
-router.post("/api/workouts/bulk", ({ body }, res) => {
-  Workout.insertMany(body)
-    .then(dbWorkout => {
-      res.json(dbWorkout);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
-
-router.get("/api/workouts", (req, res) => {
-  Workout.find({})
-    .then(dbWorkout => {
-      res.json(dbWorkout);
-    })
-    .catch(err => {
-      res.status(400).json(err);
-    });
-});
-
-module.exports = router;
 
 
