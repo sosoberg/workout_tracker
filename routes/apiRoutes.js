@@ -40,12 +40,31 @@ module.exports = function(app) {
   //other get /api/workouts
   // aggregate - look at intructions
   app.get("/api/workouts/:id", (req, res) => {
-    console.log(req.params.id)
-    Workout.findOne({
-      where: {
-        id: req.params.id
-      }
-    })
+    db.Workout.aggregate([
+      {
+        $addFields: {
+          _id: req.params.id,
+          totalDuration: { $sum: "$exercises.duration"},
+        },
+      },
+    ])
+      .then(dbWorkout => {
+        res.json(dbWorkout);
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+  });
+
+  app.get("/api/workouts/range", (req, res) => {
+    db.Workout.aggregate([
+      {
+        $addFields: {
+          totalDuration: { $sum: "$exercises.duration"},
+        },
+      },
+    ])
+    .limit(7)
       .then(dbWorkout => {
         res.json(dbWorkout);
       })
@@ -55,7 +74,15 @@ module.exports = function(app) {
   });
 
   // create delete routes
-
+  app.delete("/api/workouts/:id", (req, res) => {
+    db.Workout.findByIdAndDelete(req.params.id)
+      .then(dbWorkout => {
+        res.json(dbWorkout);
+      })
+      .catch(err => {
+        res.status(400).json(err);
+      });
+  });
 };
 
 
