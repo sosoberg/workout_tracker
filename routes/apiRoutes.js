@@ -1,8 +1,9 @@
 // const Workout = require("../models/Workout.js");
 const db = require("../models")
+const router = require('express').Router();
 
-module.exports = function(app) {
-  app.post("/api/workouts", (req , res) => {
+
+  router.post("/api/workouts", (req , res) => {
     db.Workout.create({})
       .then(dbWorkout => {
         res.json(dbWorkout);
@@ -12,7 +13,7 @@ module.exports = function(app) {
       });
   });
 
-  app.put("/api/workouts/:id", ({ body, params }, res) => {
+  router.put("/api/workouts/:id", ({ body, params }, res) => {
     db.Workout.findByIdAndUpdate(
       params.id,
       { $push: { exercises: body } },
@@ -26,7 +27,7 @@ module.exports = function(app) {
     });
   });
 
-  app.get("/api/workouts", (req, res) => {
+  router.get("/api/workouts", (req, res) => {
     db.Workout.find({})
       .then(dbWorkout => {
         res.json(dbWorkout);
@@ -39,7 +40,7 @@ module.exports = function(app) {
   //one get route needs to return range /api/workouts/range
   //other get /api/workouts
   // aggregate - look at intructions
-  app.get("/api/workouts/:id", (req, res) => {
+  router.get("/api/workouts/:id", (req, res) => {
     db.Workout.aggregate([
       {
         $addFields: {
@@ -56,7 +57,7 @@ module.exports = function(app) {
       });
   });
 
-  app.get("/api/workouts/range", (req, res) => {
+  router.get("/api/workouts/range", (req, res) => {
     db.Workout.aggregate([
       {
         $addFields: {
@@ -74,7 +75,7 @@ module.exports = function(app) {
   });
 
   // create delete routes
-  app.delete("/api/workouts/:id", (req, res) => {
+  router.delete("/api/workouts/:id", (req, res) => {
     db.Workout.findByIdAndDelete(req.params.id)
       .then(dbWorkout => {
         res.json(dbWorkout);
@@ -83,7 +84,8 @@ module.exports = function(app) {
         res.status(400).json(err);
       });
   });
-};
+
+module.exports = router;
 
 
 
