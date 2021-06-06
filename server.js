@@ -12,7 +12,7 @@ require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
 mongoose.connect(
-  process.env.MONGODB_URI || 'mongodb://localhost/workoutTrackerDB',
+  process.env.MONGODB_URI,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
