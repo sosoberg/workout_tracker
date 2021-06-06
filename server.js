@@ -12,7 +12,7 @@ require("./routes/apiRoutes")(app);
 require("./routes/htmlRoutes")(app);
 
 mongoose.connect(
-  process.env.MONGODB_URI,
+  process.env.MONGODB_URI || 'mongodb://localhost/workoutTrackerDB',
   {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -24,3 +24,5 @@ mongoose.connect(
 app.listen(PORT, function() {
   console.log(`Now listening on port: ${PORT}`);
 });
+
+//
